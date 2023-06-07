@@ -1,4 +1,3 @@
-
 /*
  * Created by ArduinoGetStarted.com
  *
@@ -6,7 +5,9 @@
  *
  * Tutorial page: https://arduinogetstarted.com/tutorials/arduino-ds1307-rtc-module
  */
- #include<PCM.h>
+
+ //the speaker pin is pin 3do not forget it
+#include<PCM.h>
 //#include <SPI.h>
 #include <RTClib.h>
 #include <Arduino.h>
@@ -21,7 +22,11 @@ RTC_DS1307 rtc;
 int sensor = 2;              // the pin that the sensor is atteched to
 int state = LOW;             // by default, no motion detected
 int val = 0;    
-  char daysOfTheWeek[7][12] = {
+#include <RTClib.h>
+ //Enable Amplified PROP shield
+
+
+char daysOfTheWeek[7][12] = {
   "Sunday",
   "Monday",
   "Tuesday",
@@ -31,43 +36,50 @@ int val = 0;
   "Saturday"
 };
 
-
 void setup () {
-//  pinMode(led, OUTPUT);      // initalize LED as an output
-  pinMode(sensor, INPUT);    // initialize sensor as an input
   Serial.begin(9600);
-    
-  
-if (! rtc.begin()) {
+pinMode(sensor, INPUT);
+
+  // SETUP RTC MODULE
+  if (! rtc.begin()) {
     Serial.println("Couldn't find RTC");
-    while  (1);
+    Serial.flush();
+    while (1);
   }
 
-  if (! rtc.isrunning()) {
-    Serial.println("RTC is NOT  running!");
-  // SETUP RTC MODULE
- }
- 
-
   // automatically sets the RTC to the date & time on PC this sketch was compiled
- // COMMENT IT WHEN THE RTC IS ALWYAS OPEN 
- 
   rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
 
   // manually sets the RTC with an explicit date & time, for example to set
   // January 21, 2021 at 3am you would call:
-   //rtc.adjust(DateTime(2021, 1, 21, 3, 0, 0));
-
-
+  // rtc.adjust(DateTime(2021, 1, 21, 3, 0, 0));
 }
 
-
 void loop () {
-//
-val = digitalRead(sensor);   // read sensor value
+  // DateTime now = rtc.now();
+  // Serial.print("Date & Time: ");
+  // Serial.print(now.year(), DEC);
+  // Serial.print('/');
+  // Serial.print(now.month(), DEC);
+  // Serial.print('/');
+  // Serial.print(now.day(), DEC);
+  // Serial.print(" (");
+  // Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
+  // Serial.print(") ");
+  // Serial.print(now.hour(), DEC);
+  // Serial.print(':');
+  // Serial.print(now.minute(), DEC);
+  // Serial.print(':');
+  // Serial.println(now.second(), DEC);
+
+  // delay(1000); // delay 1 seconds
+
+
+
+  val = digitalRead(sensor);   // read sensor value
   if (val == HIGH) {           // check if the sensor is HIGH
 //    digitalWrite(led, HIGH);   // turn LED ON
-    delay(200);                // delay 100 milliseconds 
+   // delay(200);                // delay 100 milliseconds 
 
     
     if (state == LOW) {
@@ -417,3 +429,4 @@ if (v==1){
    
    
 }
+
